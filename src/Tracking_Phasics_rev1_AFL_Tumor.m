@@ -6,22 +6,10 @@
 %processing options, etc.)
 %second section: load images and detect cells
 %third section: track cells
-%rev4 adds mean intensity as extra column to tracking array
-%make changes to:
-% - big loop where T_array formed
-% - refs to track_partn replaced by track_partn_MI
-% - reshuffle arrays before and after tracking step
-%rev5 modifies rev4 to work with data from Terasaki microscope
-%5d works with file names from CNSI microscope
-%5d_test gets rid of filter for measuring mass
-%6 has no nan for measuring mass, and stores shape factor (4*pi*A/P) for
-%each cell in the tracks and T_array arrays
-%Phasics_rev1 tracks Phasics data
-
 %SP modified on 5th Aug 2019 to accomodate 4-D tracking using fluorescent (FL) marker data
 %Code reads QPI frames at 15 minute interval & red and green FL images at alternate 15 min intervals
 %FL intensity used to avoid tracking untagged cells
-%SP modified 12/10/2020 to bin cells based on FL after tracking
+%SP modified on 12/10/2020 to bin cells based on FL after tracking
 
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -204,7 +192,6 @@ for Loc = 1:numLoc %can parfor
                 xshift_store(jj,Loc) = xshift;
                 D_stored(:,:,jj) = single(D(:,:));
                 L_stored(:,:,jj) = uint16(L(:,:));
-%                 FL_stored(:,:,jj)=uint16(L(:,:));
                 t_stored(jj,Loc) = time;
                 
                 %next, loop through all items identified in V and find only the ones
@@ -235,7 +222,7 @@ for Loc = 1:numLoc %can parfor
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             %%% Cell tracking using the track function
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            %T_array starts as [x, y, m, t, A, SF]
+
             T_array(:,3) = T_array(:,3).*massfact; %change mass weighting in T_array
             T_array = sortrows(T_array, 4); %sort T_array based on time vectors
             minTx =  min(T_array(:,1));
@@ -385,23 +372,6 @@ h = findobj(gca,'Type','line');
 fig2x=get(h,'Xdata');
 fig2y=get(h,'Ydata');
 
-%%
-figure(3)
-%plot normalized growth over time
-[num, indices] = track_numpart(tracks,minpathlength); %find tracks >= minpathlength
-
-for ii = 1:num
-    currentnum = tracks(indices(ii),5);
-    [x,y,z,t] = track_partn_SF(tracks,currentnum);
-    z_norm = z./z(1); %normalize by first mass values
-    plot(t, z_norm, '.-')
-    hold on
-end
-hold off
-ylabel('Normalized Mass', 'FontSize', 14)
-xlabel('time (h)', 'FontSize', 14)
-set(gca, 'FontSize', 14)
-
 
 %%
 %save data
@@ -410,7 +380,7 @@ if ~exist([savefolder 'data_allframes_RFP']) || overwrite
 end
 
 %% check one position tracking results to visually validate thge tracking results
-load([savefolder 'data_RFP4'])
+load([savefolder 'data_RFP4'])  % random position selected
 %%
 figure(12)
 for nn = 1:numf
