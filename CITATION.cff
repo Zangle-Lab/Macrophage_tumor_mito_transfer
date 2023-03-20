@@ -1,0 +1,29 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Macrophage Tumor Mito Transfer
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Soorya
+    family-names: Pradeep
+    orcid: 'https://orcid.org/0000-0002-0926-1480'
+  - given-names: Thomas A.
+    family-names: Zangle
+    email: tzangle@chemeng.utah.edu
+    affiliation: University of Utah
+    orcid: 'https://orcid.org/0000-0001-5899-3517'
+repository-code: >-
+  https://github.com/Zangle-Lab/Macrophage_tumor_mito_transfer
+abstract: >-
+  Code to accompany manuscript: Chelsea U. Kidwell, Joseph
+  R. Casalini, Soorya Pradeep, Sandra D. Scherer, Daniel
+  Greiner, Jarrod S. Johnson, Gregory S. Olson, Jared
+  Rutter, Alana L. Welm, Thomas A. Zangle, and Minna
+  Roh-Johnson, “Transferred mitochondria accumulate reactive
+  oxygen species, promoting proliferation,” eLife 2023.
+  e85494. doi: 10.7554/eLife.85494.
+license: CC-BY-SA-4.0
